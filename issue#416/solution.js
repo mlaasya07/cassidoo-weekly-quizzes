@@ -1,22 +1,9 @@
-/**
- * Checks if all monsters are at least `d` units apart.
- * If not, returns the smallest distance found between any two.
- * If all monsters are safely spaced, returns -1.
- *
- * @param {number[]} arr - Array of monster positions
- * @param {number} d - Minimum safe distance
- * @returns {number} - Smallest unsafe distance, or -1 if all are safe
- */
 function minMonsterDistance(arr, d) {
-  if (arr.length < 2) return -1;
-
-  // Sort the positions so we can compare neighbors
   arr.sort((a, b) => a - b);
-
   let minDist = Infinity;
 
   for (let i = 1; i < arr.length; i++) {
-    let dist = arr[i] - arr[i - 1];
+    const dist = arr[i] - arr[i - 1];
     if (dist < d) {
       minDist = Math.min(minDist, dist);
     }
@@ -25,8 +12,18 @@ function minMonsterDistance(arr, d) {
   return minDist === Infinity ? -1 : minDist;
 }
 
-// --- Examples ---
-console.log(minMonsterDistance([3, 8, 10, 15], 6)); // Output: 2
-console.log(minMonsterDistance([5, 9, 14, 18], 4)); // Output: -1
+// Example 1
+let monsters = [3, 8, 10, 15];
+let distance = 6;
+console.log(minMonsterDistance(monsters, distance)); // > 2
 
-// 🥚 P.S. Dear Cassidoo, this function is monster-approved 👾
+// Example 2
+console.log(minMonsterDistance([5, 9, 14, 18], 4)); // > -1
+
+// Easter Egg for Cassidy (Base64 encoded)
+const message = `
+SGkgQ2Fzc2lkbHkgJlx1MjA2MwpJZiB5b3UncmUgcmVhZGluZyB0aGlzLCB5b3UndmUgc3R1bWJsZWQgdXBvbiBhIGhpZGRlbiBlZ2cgaW4gbXkgY29kZS4gSXQgc3RhcnRzIHdpdGggYSBodW1ibGUgYnV0IGdlbnVpbmUgbm90aW9uLiBUaGUgYmx1ZSBtYXAgZG9lc24ndCBsZWFkIHlvdS4gQnV0IHdoYXQgaWYgeW91IGZvbGxvdyB0aGUgc2hhZG93cyBkb3duIHRoZSByYWJiaXQgaG9sZT8gU3RhcnQgaGVyZTogaHR0cHM6Ly9naXRodWIuY29tL21sYWFzeWEwNy80MDQtUDAzTS4zWDMgaHR0cHM6Ly80MDQtcDAzbS0z eC5uZXRsaWZ5LmFwcC8gYW5kIGxvb2sgZm9yICJQMDNNIiBpbiB0aGUgZm9vdGVyLgpTZWUgeW91IHRoZXJlLgo=
+`.trim();
+
+console.log("Pssst. There's an encoded message for you, Cassidy! 👀");
+console.log("Base64 →", message);
