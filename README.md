@@ -7,16 +7,22 @@ A collection of my solutions to the weekly coding puzzles shared by [Cassidy Wil
 Cassidoo shares a fun and clever coding question every week in her newsletter. This repo is my personal attempt to solve them — to keep learning, stay sharp, and enjoy the little brain bends.
 
 ## 📁 Structure
-
+```plaintext
 cassidoo-weekly-quizzes/
 ├── week-01/
-│ ├── README.md
-│ └── solution.js
+│   ├── prompt.md         # The original quiz prompt
+│   ├── solution.js       # Your solution in JavaScript
+│   └── explanation.md    # Your thought process / approach
 ├── week-02/
-│ ├── README.md
-│ └── solution.js
-...
-
+│   ├── prompt.md
+│   ├── solution.js
+│   └── explanation.md
+├── week-03/
+│   ├── prompt.md
+│   ├── solution.js
+│   └── explanation.md
+├── README.md             # Main readme for the whole repo
+```
 
 Each week's folder includes:
 - `README.md`: The question prompt + explanation of my approach.
@@ -32,8 +38,6 @@ Each week's folder includes:
 ## 🧩 Latest Quiz
 
 > “You can submit your answers by replying to this email with a link to your solution.”
-
-Solution for the latest quiz can be found [here](./week-XX).
 
 ## 📬 Subscribe
 
