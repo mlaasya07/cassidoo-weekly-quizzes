@@ -9,15 +9,15 @@ Cassidoo shares a fun and clever coding question every week in her newsletter. T
 ## 📁 Structure
 ```plaintext
 cassidoo-weekly-quizzes/
-├── week-01/
+├── issue#/
 │   ├── prompt.md         # The original quiz prompt
 │   ├── solution.js       # Your solution in JavaScript
 │   └── explanation.md    # Your thought process / approach
-├── week-02/
+├── issue#/
 │   ├── prompt.md
 │   ├── solution.js
 │   └── explanation.md
-├── week-03/
+├── issue#/
 │   ├── prompt.md
 │   ├── solution.js
 │   └── explanation.md
