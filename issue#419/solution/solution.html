@@ -1,1 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Management System</title>
+</head>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap');
+    
+body {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #000000;
+    margin: 0;
+    padding: 20px;
+}
 
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.order-form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.food-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #c91450;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ef87aa;
+}
+
+.summary, .occupied-tables {
+    background: #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+  </style>
+<body>
+    <div class="container">
+        <h1>Restaurant Management System</h1>
+        
+        <div class="order-form">
+            <h2>Take Order</h2>
+            <label for="tableNumber">Select Table:</label>
+            <select id="tableNumber" required>
+                <option value="">Select a table</option>
+                <option value="1">Table 1</option>
+                <option value="2">Table 2</option>
+                <option value="3">Table 3</option>
+                <option value="4">Table 4</option>
+                <option value="5">Table 5</option>
+            </select>
+            
+            <label for="foodItems">Select Food Items:</label>
+            <div id="foodItems">
+                <div class="food-item">
+                    <span>Burger</span>
+                    <button class="decrease">-</button>
+                    <span class="serving-count" data-item="Burger">0</span>
+                    <button class="increase">+</button>
+                </div>
+                <div class="food-item">
+                    <span>Fries</span>
+                    <button class="decrease">-</button>
+                    <span class="serving-count" data-item="Fries">0</span>
+                    <button class="increase">+</button>
+                </div>
+                <div class="food-item">
+                    <span>Pizza</span>
+                    <button class="decrease">-</button>
+                    <span class="serving-count" data-item="Pizza">0</span>
+                    <button class="increase">+</button>
+                </div>
+                <div class="food-item">
+                    <span>Soda</span>
+                    <button class="decrease">-</button>
+                    <span class="serving-count" data-item="Soda">0</span>
+                    <button class="increase">+</button>
+                </div>
+                <div class="food-item">
+                    <span>Salad</span>
+                    <button class="decrease">-</button>
+                    <span class="serving-count" data-item="Salad">0</span>
+                    <button class="increase">+</button>
+                </div>
+                <div class="food-item">
+                    <span>Pasta</span>
+                    <button class="decrease">-</button>
+                    <span class="serving-count" data-item="Pasta">0</span>
+                    <button class="increase">+</button>
+                </div>
+                <div class="food-item">
+                    <span>Steak</span>
+                    <button class="decrease">-</button>
+                    <span class="serving-count" data-item="Steak">0</span>
+                    <button class="increase">+</button>
+                </div>
+                <div class="food-item">
+                    <span>Ice Cream</span>
+                    <button class="decrease">-</button>
+                    <span class="serving-count" data-item="Ice Cream">0</span>
+                    <button class="increase">+</button>
+                </div>
+                <div class="food-item">
+                    <span>Chicken Wings</span>
+                    <button class="decrease">-</button>
+                    <span class="serving-count" data-item="Chicken Wings">0</span>
+                    <button class="increase">+</button>
+                </div>
+                <div class="food-item">
+                    <span>Nachos</span>
+                    <button class="decrease">-</button>
+                    <span class="serving-count" data-item="Nachos">0</span>
+                    <button class="increase">+</button>
+                </div>
+            </div>
+            
+            <button id="submitOrder">Submit Order</button>
+        </div>
+        
+        <div class="summary">
+            <h2>Order Summary</h2>
+            <pre id="orderSummary"></pre>
+        </div>
+
+        <div class="occupied-tables">
+            <h2>Occupied Tables</h2>
+            <pre id="occupiedTables"></pre>
+        </div>
+    </div>
+
+    <script>
+      // script.js
+let orders = [];
+let occupiedTables = new Set();
+
+function summarizeOrders(orders) {
+    const summary = {};
+
+    orders.forEach(order => {
+        const tableNumber = order.tableNumber;
+        const items = order.items;
+
+        if (!summary[tableNumber]) {
+            summary[tableNumber] = {};
+        }
+
+        items.forEach(item => {
+            const itemName = item.name;
+            const itemCount = item.count;
+
+            if (!summary[tableNumber][itemName]) {
+                summary[tableNumber][itemName] = 0;
+            }
+            summary[tableNumber][itemName] += itemCount;
+        });
+    });
+
+    return summary;
+}
+
+function formatOrderSummary(summary) {
+    const formattedSummary = [];
+
+    for (const table in summary) {
+        const items = summary[table];
+        const itemDescriptions = [];
+
+        for (const item in items) {
+            itemDescriptions.push(`${items[item]} ${item}`);
+        }
+
+        const lastItem = itemDescriptions.pop();
+        const orderString = itemDescriptions.length > 0 
+            ? `${itemDescriptions.join(', ')} and ${lastItem}` 
+            : lastItem;
+
+        formattedSummary.push(`Table ${table} ordered ${orderString}.`);
+    }
+
+    return formattedSummary.join('\n');
+}
+
+document.querySelectorAll('.increase').forEach(button => {
+    button.addEventListener('click', () => {
+        const servingCount = button.previousElementSibling;
+        servingCount.textContent = parseInt(servingCount.textContent) + 1;
+    });
+});
+
+document.querySelectorAll('.decrease').forEach(button => {
+    button.addEventListener('click', () => {
+        const servingCount = button.nextElementSibling;
+        const currentCount = parseInt(servingCount.textContent);
+        if (currentCount > 0) {
+            servingCount.textContent = currentCount - 1;
+        }
+    });
+});
+
+document.getElementById('submitOrder').addEventListener('click', () => {
+    const tableNumber = document.getElementById('tableNumber').value;
+    const selectedItems = [];
+
+    document.querySelectorAll('.food-item').forEach(item => {
+        const itemName = item.querySelector('.serving-count').getAttribute('data-item');
+        const itemCount = parseInt(item.querySelector('.serving-count').textContent);
+        if (itemCount > 0) {
+            selectedItems.push({ name: itemName, count: itemCount });
+        }
+    });
+
+    if (tableNumber && selectedItems.length > 0) {
+        orders.push({ tableNumber: parseInt(tableNumber), items: selectedItems });
+        occupiedTables.add(tableNumber);
+        
+        const summary = summarizeOrders(orders);
+        const formattedSummary = formatOrderSummary(summary);
+        document.getElementById('orderSummary').textContent = formattedSummary;
+        
+        // Update occupied tables display
+        document.getElementById('occupiedTables').textContent = Array.from(occupiedTables).join(', ');
+
+        // Clear inputs
+        document.getElementById('tableNumber').value = '';
+        document.querySelectorAll('.serving-count').forEach(count => count.textContent = '0'); // Reset serving counts
+    } else {
+        alert('Please fill in all fields.');
+    }
+});
+</script>
+</body>
+</html>
